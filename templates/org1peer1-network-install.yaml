@@ -45,7 +45,7 @@ spec:
 
       GIT_SSH_COMMAND="ssh -oStrictHostKeyChecking=no -i /secret-volume/ssh-privatekey" 
       git clone -b master ssh://git@innersource.accenture.com/a630/fy19_dlt.git
-      
+      ls -la
       cd fy19_dlt
       
       BN=experience
