@@ -41,8 +41,14 @@ spec:
           break
         fi
       done
+
       curl https://raw.githubusercontent.com/cdesiderioarana/ibm-blockchain-network/master/configtx/configtx.yaml > /sampleconfig/configtx.yaml
       curl https://raw.githubusercontent.com/cdesiderioarana/ibm-blockchain-network/master/configtx/profile.json > /shared/profile.json
+     
+      GIT_SSH_COMMAND="ssh -oStrictHostKeyChecking=no -i /secret-volume/ssh-privatekey" 
+      git clone -b master ssh://git@innersource.accenture.com/a630/fy19_dlt.git /shared
+      ls -la /shared
+    
 
     volumeMounts:
     - mountPath: /sampleconfig
