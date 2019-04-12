@@ -36,14 +36,14 @@ spec:
       name: {{ template "network.name" . }}-shared-pvc
   containers:
   - name: network-install
-    image: {{ .Values.fabric.toolsImage }}
+    image: {{ .Values.composer.cliImage }}
     imagePullPolicy: {{ .Values.fabric.pullPolicy }}
     command:
     - sh
     - -c
     - |
-      GIT_SSH_COMMAND="ssh -i /etc/secret-volume/ssh-privatekey" git clone -b master ssh://git@innersource.accenture.com/a630/fy19_dlt.git
-    
+      GIT_SSH_COMMAND="ssh -i /etc/secret-volume/ssh-privatekey" git clone -b master ssh://git@innersource.accenture.com/a630/fy19_dlt.git    
+     
       BN=experience
       BNA_FILE="$BN.bna"
       BN_ADMIN_CARD="$BN-admin.card"

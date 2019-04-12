@@ -73,6 +73,8 @@ spec:
           value: "true"
         - name: CORE_PEER_NETWORKID
           value: nid1
+        - name: CORE_PEER_ID
+          value: {{ template "network.name" . }}-org1peer1
         - name: CORE_PEER_ADDRESS
           value: {{ template "network.name" . }}-org1peer1:30110
         - name: CORE_PEER_LISTENADDRESS
@@ -80,6 +82,10 @@ spec:
         - name: CORE_PEER_EVENTS_ADDRESS
           value: 0.0.0.0:30111
         - name: CORE_PEER_GOSSIP_BOOTSTRAP
+          value: {{ template "network.name" . }}-org1peer1:30110
+        - name: CORE_PEER_GOSSIP_ENDPOINT
+          value: {{ template "network.name" . }}-org1peer1:30110
+        - name: CORE_PEER_GOSSIP_EXTERNALENDPOINT
           value: {{ template "network.name" . }}-org1peer1:30110
         - name: CORE_PEER_GOSSIP_ORGLEADER	
           value: "false"
@@ -116,7 +122,13 @@ spec:
         - name: CORE_PEER_TLS_ENABLED
           value: "false"
         - name: CORE_LEDGER_STATE_STATEDATABASE
-          value: goleveldb
+          value: "CouchDB"
+        - name: CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS
+          value: "localhost:5984"
+        - name: CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME
+          value: "hyperledgeruser"
+        - name: CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD
+          value: "hyperledgerpass"
         - name: GODEBUG	
           value: "netdns=go"
         - name: FABRIC_CFG_PATH
@@ -128,6 +140,15 @@ spec:
           name: {{ template "network.name" . }}-shared-pvc
         - mountPath: /host/var/run/docker.sock
           name: dockersocket
+      - name: couchdb
+        image: hyperledger/fabric-couchdb:amd64-0.4.14
+        env:
+        - name: COUCHDB_USER
+          value: "hyperledgeruser"
+        - name: COUCHDB_PASSWORD
+          value: "hyperledgerpass"
+        - name: DB_URL	
+          value: http://localhost:5984/member_db
 ...
 ---
 apiVersion: v1
@@ -160,4 +181,7 @@ spec:
     #nodePort: 30111
     targetPort: 30111
     name: events
+  - protocol: TCP
+    port: 5984
+    name: couchdb
 ...
