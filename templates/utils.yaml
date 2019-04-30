@@ -22,9 +22,9 @@ spec:
       claimName: {{ template "network.name" . }}-composer-pvc
   - name: sampleconfig
     emptyDir: {}
- - name: config
-   configMap:
-     name: {{ template "network.name" . }}-configmap       
+  - name: config
+    configMap:
+      name: {{ template "network.name" . }}-configmap       
   initContainers:
   - name: init-service
     image: gcr.io/cloud-builders/git
