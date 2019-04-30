@@ -22,7 +22,9 @@ spec:
       claimName: {{ template "network.name" . }}-composer-pvc
   - name: sampleconfig
     emptyDir: {}
-
+ - name: config
+   configMap:
+     name: {{ template "network.name" . }}-configmap       
   initContainers:
   - name: init-service
     image: gcr.io/cloud-builders/git
@@ -48,11 +50,12 @@ spec:
       GIT_SSH_COMMAND="ssh -oStrictHostKeyChecking=no -i /secret-volume/ssh-privatekey" 
       git clone -b master ssh://git@innersource.accenture.com/a630/fy19_dlt.git /shared
       ls -la /shared
-    
 
     volumeMounts:
     - mountPath: /sampleconfig
       name: sampleconfig
+    - mountPath: /networkconfig
+      name: config
     - mountPath: /shared
       name: {{ template "network.name" . }}-shared-pvc
   containers:

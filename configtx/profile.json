@@ -17,7 +17,7 @@
     }
   },
   "channels": {
-    "channel1": {
+    "composerChannel": {
       "orderers": [
         "%NETWORK_NAME%-orderer"
       ],

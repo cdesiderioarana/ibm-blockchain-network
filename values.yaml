@@ -44,13 +44,8 @@ composer:
   pullPolicy: IfNotPresent
   card: PeerAdmin@hlfv1
 
-marbles:
-  image: dhyeyibm/container-service-marbles:1.0.1
-  pullPolicy: IfNotPresent
-
-# Added for Channel
 channel:
-  name: channel1
+  name: composerChannel
 
 # Added for Chaincode
 chaincode:
