@@ -1,0 +1,10 @@
+templates/ca.yaml
+templates/composer-playground.yaml
+templates/composer-rest-server.yaml
+templates/create-channel.yaml
+templates/orderer.yaml
+templates/create-peer-admin.yaml
+templates/org1peer1-create.yaml
+templates/org1peer1-joinchannel.yaml
+templates/org1peer1-network-install.yaml
+
