@@ -17,12 +17,21 @@ spec:
   - name: dockersocket
     hostPath:
       path: /var/run/docker.sock
-  - name: {{ template "network.name" . }}-composer-pvc
-    persistentVolumeClaim:
-      claimName: {{ template "network.name" . }}-composer-pvc
-  - name: config
-    configMap:
-      name: {{ template "network.name" . }}-configmap       
+  initContainers:
+      - name: await-network-install-org1peer1
+        image: busybox:1.28.4
+        command:
+        - sh
+        - -c
+        - |
+          while [ ! -f /shared/config/ready_config_load ]; do
+            echo Waiting for Config Files to be loaded
+            sleep 5s
+          done
+          echo Files loaded on 
+        volumeMounts:
+        - mountPath: /shared
+          name: {{ template "network.name" . }}-shared-pvc    
   containers:
   - name: cryptogen
     image: {{ .Values.fabric.toolsImage }}
@@ -32,7 +41,7 @@ spec:
     - -c
     - -e
     - |
-      cryptogen generate --config /configtx/crypto-config.yaml
+      cryptogen generate --config /shared/config/crypto-config.yaml
       cp -r crypto-config /shared/
 
       for file in $(find /shared/ -iname *_sk); do
@@ -42,7 +51,7 @@ spec:
       find /shared -type d | xargs chmod a+rx
       find /shared -type f | xargs chmod a+r
 
-      cat /configtx/configtx.yaml | sed --expression="s|blockchain-|${DEPLOYMENT_NAME}-|g" > /shared/configtx.yaml
+      cat /shared/config/configtx.yaml | sed --expression="s|blockchain-|${DEPLOYMENT_NAME}-|g" > /shared/configtx.yaml
       cd /shared/
 
       configtxgen -profile ComposerOrdererGenesis -outputBlock orderer.block
@@ -52,10 +61,11 @@ spec:
 
       sleep 2s
       echo "Starting bootstrap"
-      cp -r /configtx/cas /shared
+      cp -r /shared/config/cas /shared
       echo "Done copying"
       touch /shared/bootstrapped
       rm -f /shared/status_configtxgen_complete
+      rm -f /shared/config/ready_config_load
       mkdir -p /home/composer/.composer
       chown 1000 /home/composer/.composer
       touch /shared/status_bootstrapping_complete
@@ -74,7 +84,5 @@ spec:
     volumeMounts:
     - mountPath: /shared
       name: {{ template "network.name" . }}-shared-pvc
-    - mountPath: /configtx
-      name: config
 
 
