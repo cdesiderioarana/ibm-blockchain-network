@@ -17,21 +17,6 @@ spec:
   - name: dockersocket
     hostPath:
       path: /var/run/docker.sock
-  initContainers:
-      - name: await-network-install-org1peer1
-        image: busybox:1.28.4
-        command:
-        - sh
-        - -c
-        - |
-          while [ ! -f /shared/config/ready_config_load ]; do
-            echo Waiting for Config Files to be loaded
-            sleep 5s
-          done
-          echo Files loaded on 
-        volumeMounts:
-        - mountPath: /shared
-          name: {{ template "network.name" . }}-shared-pvc    
   containers:
   - name: cryptogen
     image: {{ .Values.fabric.toolsImage }}
@@ -41,6 +26,12 @@ spec:
     - -c
     - -e
     - |
+
+      while [ ! -f /shared/config/ready_config_load ]; do
+            echo Waiting for Config Files to be loaded
+            sleep 5s
+          done
+      echo Files loaded on
       cryptogen generate --config /shared/config/crypto-config.yaml
       cp -r crypto-config /shared/
 
