@@ -41,12 +41,12 @@ spec:
           done
 
           touch /shared/status_fabricca_complete &&
-          fabric-ca-server start -b admin:adminpw -d
+          fabric-ca-server start -b admin:adminpw
         env:
         - name: FABRIC_CA_SERVER_CA_CERTFILE
           value: /shared/crypto-config/ordererOrganizations/example.com/ca/ca.example.com-cert.pem
         - name: FABRIC_CA_SERVER_CA_KEYFILE
-          value: /mnt/crypto-config/ordererOrganizations/example.com/ca/key.pem #948030ba41c19d662d767eb6f0d8196ff95c87f8f838fc4b8951f886357d82e8_sk
+          value: /shared/crypto-config/ordererOrganizations/example.com/ca/key.pem #948030ba41c19d662d767eb6f0d8196ff95c87f8f838fc4b8951f886357d82e8_sk
         - name: FABRIC_CA_SERVER_DEBUG
           value: "true"
         - name: FABRIC_CA_SERVER_TLS_ENABLED
@@ -55,8 +55,6 @@ spec:
           value: /certs/ca0a-cert.pem
         - name: FABRIC_CA_SERVER_TLS_KEYFILE
           value: /certs/ca0a-key.pem
-        - name: GODEBUG
-          value: "netdns=go"
         volumeMounts:
         - mountPath: /shared
           name: {{ template "network.name" . }}-shared-pvc

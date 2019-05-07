@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: {{ template "network.name" . }}-bootstrap
+  name: {{ template "network.name" . }}-initialize
   labels:
     app: {{ .Chart.Name }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
@@ -26,7 +26,6 @@ spec:
     - -c
     - -e
     - |
-
       while [ ! -f /shared/config/ready_config_load ]; do
             echo Waiting for Config Files to be loaded
             sleep 5s
@@ -52,8 +51,6 @@ spec:
 
       sleep 2s
       touch /shared/bootstrapped
-      rm -f /shared/status_configtxgen_complete
-      rm -f /shared/config/ready_config_load
       rm -f /shared/config/ready_config_load
       mkdir -p /home/composer/.composer
       chown 1000 /home/composer/.composer

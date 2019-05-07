@@ -1,4 +1,3 @@
-templates/ca.yaml
 templates/composer-playground.yaml
 templates/composer-rest-server.yaml
 templates/create-channel.yaml

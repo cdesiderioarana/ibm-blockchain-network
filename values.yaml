@@ -30,10 +30,10 @@ persistence:
   storageClass: ""
 
 fabric:
-  toolsImage: hyperledger/fabric-tools:1.2.1
-  ordererImage: hyperledger/fabric-orderer:1.2.1
-  caImage: hyperledger/fabric-ca:1.2.1
-  peerImage: hyperledger/fabric-peer:1.2.1
+  toolsImage: hyperledger/fabric-tools:1.3.0
+  ordererImage: hyperledger/fabric-orderer:1.3.0
+  caImage: hyperledger/fabric-ca:1.3.0
+  peerImage: hyperledger/fabric-peer:1.3.0
   pullPolicy: IfNotPresent
 
 composer:
