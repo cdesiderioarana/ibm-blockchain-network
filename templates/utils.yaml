@@ -51,11 +51,9 @@ spec:
       find /shared -type f | xargs chmod a+r
 
       sleep 2s
-      echo "Starting bootstrap"
-      cp -r /shared/config/cas /shared
-      echo "Done copying"
       touch /shared/bootstrapped
       rm -f /shared/status_configtxgen_complete
+      rm -f /shared/config/ready_config_load
       rm -f /shared/config/ready_config_load
       mkdir -p /home/composer/.composer
       chown 1000 /home/composer/.composer

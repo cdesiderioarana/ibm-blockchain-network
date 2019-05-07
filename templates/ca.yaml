@@ -41,10 +41,8 @@ spec:
           done
 
           touch /shared/status_fabricca_complete &&
-          fabric-ca-server start -c ${CONFIGYAML}
+          fabric-ca-server start -b admin:adminpw -d
         env:
-        - name: CONFIGYAML
-          value: /shared/cas/ca.yaml
         - name: FABRIC_CA_SERVER_CA_CERTFILE
           value: /shared/crypto-config/ordererOrganizations/example.com/ca/ca.example.com-cert.pem
         - name: FABRIC_CA_SERVER_CA_KEYFILE
